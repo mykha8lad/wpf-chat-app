@@ -12,3 +12,4 @@ C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\refint\ChatServ
 C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.pdb
 C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.genruntimeconfig.cache
 C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ref\ChatServer.dll
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.sourcelink.json
