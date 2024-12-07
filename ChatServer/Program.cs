@@ -13,16 +13,14 @@ class Program
     static async Task Main(string[] args)
     {
         Console.WriteLine("Запускаем сервер...");
-
-        // Настраиваем сервер
-        int port = 5000; // Порт, который будет использовать сервер
+        
+        int port = 5000;
         _server = new TcpListener(IPAddress.Any, port);
         _server.Start();
         Console.WriteLine($"Сервер запущен на порту {port}.");
 
         while (true)
-        {
-            // Ожидаем подключения клиента
+        {            
             var client = await _server.AcceptTcpClientAsync();
             var clientEndPoint = client.Client.RemoteEndPoint?.ToString();
             if (clientEndPoint != null)
@@ -42,18 +40,16 @@ class Program
             var buffer = new byte[1024];
 
             while (true)
-            {
-                // Читаем данные от клиента
+            {                
                 int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                 if (bytesRead == 0)
                 {
-                    break; // Клиент отключился
+                    break;
                 }
 
                 var message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                 Console.WriteLine($"Сообщение от {clientEndPoint}: {message}");
-
-                // Рассылаем сообщение всем клиентам
+                
                 await BroadcastMessageAsync($"{clientEndPoint}: {message}");
             }
         }
@@ -62,8 +58,7 @@ class Program
             Console.WriteLine($"Ошибка с клиентом {clientEndPoint}: {ex.Message}");
         }
         finally
-        {
-            // Отключаем клиента
+        {            
             client.Close();
             _clients.TryRemove(clientEndPoint, out _);
             Console.WriteLine($"Клиент отключён: {clientEndPoint}");

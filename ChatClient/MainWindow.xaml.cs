@@ -1,23 +1,97 @@
-﻿using System.Text;
+﻿using System;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
-namespace ChatClient;
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+namespace ChatClient
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
+        private TcpClient _client;
+        private NetworkStream _stream;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            ConnectToServer();
+        }
+
+        private async void ConnectToServer()
+        {
+            try
+            {
+                _client = new TcpClient();
+                await _client.ConnectAsync("127.0.0.1", 5000);
+                _stream = _client.GetStream();
+                AppendMessage("Подключение к серверу установлено.");
+                
+                _ = ReceiveMessagesAsync();
+            }
+            catch (Exception ex)
+            {
+                AppendMessage($"Ошибка подключения: {ex.Message}");
+            }
+        }
+
+        private async Task ReceiveMessagesAsync()
+        {
+            var buffer = new byte[1024];
+            try
+            {
+                while (true)
+                {
+                    int bytesRead = await _stream.ReadAsync(buffer, 0, buffer.Length);
+                    if (bytesRead == 0)
+                    {
+                        AppendMessage("Соединение с сервером потеряно.");
+                        break;
+                    }
+
+                    var message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    AppendMessage(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendMessage($"Ошибка при получении данных: {ex.Message}");
+            }
+            finally
+            {
+                _client.Close();
+            }
+        }
+
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendMessage();
+        }
+
+        private async void SendMessage()
+        {
+            var message = MessageBox.Text.Trim();
+            if (string.IsNullOrWhiteSpace(message) || _stream == null) return;
+
+            try
+            {
+                var data = Encoding.UTF8.GetBytes(message);
+                await _stream.WriteAsync(data, 0, data.Length);
+                MessageBox.Clear();
+            }
+            catch (Exception ex)
+            {
+                AppendMessage($"Ошибка отправки сообщения: {ex.Message}");
+            }
+        }
+
+        private void AppendMessage(string message)
+        {            
+            Dispatcher.Invoke(() =>
+            {
+                ChatBox.AppendText($"{message}{Environment.NewLine}");
+                ChatBox.ScrollToEnd();
+            });
+        }
     }
 }
