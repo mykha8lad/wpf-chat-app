@@ -16,7 +16,7 @@ namespace ChatClient
         {
             InitializeComponent();
             ConnectToServer();
-        }
+        } 
 
         private async void ConnectToServer()
         {

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 class Program
 {
-    private static TcpListener? _server;
+    private static TcpListener? _server;    
+
     private static ConcurrentDictionary<string, TcpClient> _clients = new();
 
     static async Task Main(string[] args)
@@ -33,53 +34,69 @@ class Program
     }
 
     private static async Task HandleClientAsync(TcpClient client, string clientEndPoint)
+{
+    try
+    {
+        BroadcastMessageAsync($"Пользователь {clientEndPoint} подключился.");
+
+        var stream = client.GetStream();
+        var buffer = new byte[1024];
+
+        while (true)
+        {
+            int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+            if (bytesRead == 0) break;
+
+            var message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            BroadcastMessageAsync($"{clientEndPoint}: {message}");
+        }
+    }
+    catch
+    {
+        // Игнорируем ошибки клиента
+    }
+    finally
+    {
+        client.Close();
+        _clients.TryRemove(clientEndPoint, out _);
+        BroadcastMessageAsync($"Пользователь {clientEndPoint} отключился.");
+    }
+}
+
+
+
+    private static async Task BroadcastMessageAsync(string message, string sender = null)
+{
+    var messageBytes = Encoding.UTF8.GetBytes(message);
+
+    foreach (var kvp in _clients)
     {
         try
         {
-            var stream = client.GetStream();
-            var buffer = new byte[1024];
+            var recipient = kvp.Key;
 
-            while (true)
-            {                
-                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                if (bytesRead == 0)
-                {
-                    break;
-                }
-
-                var message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                Console.WriteLine($"Сообщение от {clientEndPoint}: {message}");
-                
-                await BroadcastMessageAsync($"{clientEndPoint}: {message}");
+            // Личное сообщение
+            if (!string.IsNullOrEmpty(sender) && message.StartsWith($"@{recipient} "))
+            {
+                var privateMessage = message.Substring(recipient.Length + 2);
+                var privateMessageBytes = Encoding.UTF8.GetBytes($"[Личное от {sender}]: {privateMessage}");
+                await kvp.Value.GetStream().WriteAsync(privateMessageBytes, 0, privateMessageBytes.Length);
+            }
+            // Глобальное сообщение
+            else if (string.IsNullOrEmpty(sender) || !message.StartsWith("@"))
+            {
+                await kvp.Value.GetStream().WriteAsync(messageBytes, 0, messageBytes.Length);
             }
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Ошибка с клиентом {clientEndPoint}: {ex.Message}");
-        }
-        finally
-        {            
-            client.Close();
-            _clients.TryRemove(clientEndPoint, out _);
-            Console.WriteLine($"Клиент отключён: {clientEndPoint}");
+            // Игнорируем ошибки отправки
         }
     }
+}
 
-    private static async Task BroadcastMessageAsync(string message)
-    {
-        var messageBytes = Encoding.UTF8.GetBytes(message);
 
-        foreach (var client in _clients.Values)
-        {
-            try
-            {
-                var stream = client.GetStream();
-                await stream.WriteAsync(messageBytes, 0, messageBytes.Length);
-            }
-            catch
-            {
-                // Игнорируем ошибки отправки
-            }
-        }
-    }
+
+
+
 }
