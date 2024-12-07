@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run ChatServer",
+        "type": "coreclr",
+        "request": "launch",
+        "program": "${workspaceFolder}/ChatServer/bin/Debug/net7.0/ChatServer.dll",
+        "cwd": "${workspaceFolder}/ChatServer",
+        "console": "internalConsole",
+        "stopAtEntry": false
+      },
+      {
+        "name": "Run ChatClient",
+        "type": "coreclr",
+        "request": "launch",
+        "program": "${workspaceFolder}/ChatClient/bin/Debug/net7.0/ChatClient.dll",
+        "cwd": "${workspaceFolder}/ChatClient",
+        "console": "internalConsole",
+        "stopAtEntry": false
+      }
+    ]
+  }
+  

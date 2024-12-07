@@ -1,0 +1,14 @@
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\bin\Debug\net9.0\ChatServer.exe
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\bin\Debug\net9.0\ChatServer.deps.json
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\bin\Debug\net9.0\ChatServer.runtimeconfig.json
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\bin\Debug\net9.0\ChatServer.dll
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\bin\Debug\net9.0\ChatServer.pdb
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.AssemblyInfoInputs.cache
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.AssemblyInfo.cs
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.csproj.CoreCompileInputs.cache
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.dll
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\refint\ChatServer.dll
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.pdb
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ChatServer.genruntimeconfig.cache
+C:\Users\Влад\Desktop\WpfChatApp\ChatServer\obj\Debug\net9.0\ref\ChatServer.dll
