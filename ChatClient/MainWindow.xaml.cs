@@ -93,5 +93,23 @@ namespace ChatClient
                 ChatBox.ScrollToEnd();
             });
         }
+
+        private async void LoadDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChatBox.AppendText("Загрузка данных...\n");
+    
+            // Запуск асинхронной задачи
+            string data = await LoadDataAsync();
+
+            ChatBox.AppendText($"Данные загружены: {data}\n");
+        }
+
+        // Асинхронный метод загрузки данных
+        private async Task<string> LoadDataAsync()
+        {
+            // Имитация длительной загрузки (например, из базы данных или API)
+            await Task.Delay(3000); // Задержка 3 секунды
+            return "Пример данных";
+        }  // Это не блокирует UI, и пользователь может продолжать взаимодействовать с приложением.
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Net;
+using System.Threading;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,35 @@ class Program
 
     private static ConcurrentDictionary<string, TcpClient> _clients = new();
 
+    private static void StartBackgroundTask()
+    {
+        // Создание нового потока
+        Thread thread = new Thread(() =>
+        {
+            Console.WriteLine("Фоновая задача началась.");
+            PerformHeavyCalculation();
+            Console.WriteLine("Фоновая задача завершена.");
+        });
+
+        thread.IsBackground = true; // Задаем поток фоновым, чтобы он завершался вместе с приложением
+        thread.Start();
+    }
+
+    private static void PerformHeavyCalculation()
+    {
+        // Имитация сложных вычислений
+        Thread.Sleep(5000); // Задержка 5 секунд
+        Console.WriteLine("Результат вычислений: 42");
+    }
+
     static async Task Main(string[] args)
     {
         Console.WriteLine("Запускаем сервер...");
+
+        StartBackgroundTask(); // Запуск фоновый задачи
+
+        // Основной код сервера
+        StartServer();
         
         int port = 5000;
         _server = new TcpListener(IPAddress.Any, port);
@@ -31,6 +58,12 @@ class Program
                 _ = HandleClientAsync(client, clientEndPoint);
             }
         }
+    }
+
+    private static void StartServer()
+    {
+        // Основной код сервера
+        Console.WriteLine("Сервер продолжает работать...");
     }
 
     private static async Task HandleClientAsync(TcpClient client, string clientEndPoint)
