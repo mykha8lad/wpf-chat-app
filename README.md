@@ -17,3 +17,20 @@ ___
 ## :star: https://github.com/users/mykha8lad/projects/3
 [![scrum-board.jpg](https://i.postimg.cc/63SZqBND/scrum-board.jpg)](https://postimg.cc/XGfqDSq8)
 ### В дальнейшем доска будет обновляться новыми задачами.
+___
+## Project Preview
+### Структура проекта
+[![1.jpg](https://i.postimg.cc/Y2Gyt3cs/1.jpg)](https://postimg.cc/Z0mLc658)
+### Добавление зависимостей
+[![2.jpg](https://i.postimg.cc/7ZxVJ1cD/2.jpg)](https://postimg.cc/YhsgJFMy)
+### Запуск сервера и логирование
+[![3.jpg](https://i.postimg.cc/dt9RFk0f/3.jpg)](https://postimg.cc/nCC9YLBK)
+### Отдельная ветка branch для работы с клиентом
+[![4.jpg](https://i.postimg.cc/rwm4Lf3d/4.jpg)](https://postimg.cc/rKBs1N8c)
+### Работа с многопоточностью и имитация сложных процессов на стороне сервера
+[![5.jpg](https://i.postimg.cc/Wz8dBZ76/5.jpg)](https://postimg.cc/D4Wfs8H8)
+### Общий вид приложения
+[![6.jpg](https://i.postimg.cc/FFVkktQd/6.jpg)](https://postimg.cc/qggvW5q4)
+___
+### Также, обработка подключений и сообщений реализована асинхронно для повышения производительности и возможности работы с несколькими клиентами одновременно.
+### Каждое подключение клиента обрабатывается в отдельной задаче, что позволяет поддерживать множество активных пользователей без блокировки основного потока.
